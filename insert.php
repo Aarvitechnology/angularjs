@@ -23,9 +23,10 @@ if($form_data->action == 'fetch_single_data')
 		$output['first_name'] = $row['first_name'];
 		$output['last_name'] = $row['last_name'];
 		$output['email'] = $row['email'];
+		$output['mobile'] = $row['mobile'];
 	}
 }
-elseif($form_data->action == "Delete")
+else if($form_data->action == "Delete")
 {
 	$query = "
 	DELETE FROM tbl_sample WHERE id='".$form_data->id."'
@@ -65,6 +66,15 @@ else
 		$email = $form_data->email;
 	}
 
+	if(empty($form_data->mobile))
+	{
+		$error[] = 'mobile is Required';
+	}
+	else
+	{
+		$mobile = $form_data->mobile;
+	}
+
 	if(empty($error))
 	{
 		if($form_data->action == 'Insert')
@@ -72,12 +82,13 @@ else
 			$data = array(
 				':first_name'		=>	$first_name,
 				':last_name'		=>	$last_name,
-				':email'		=>	$email
+				':email'		=>	$email,
+				':mobile'		=>	$mobile
 			);
 			$query = "
 			INSERT INTO tbl_sample 
-				(first_name, last_name,email) VALUES 
-				(:first_name, :last_name, :email)
+				(first_name, last_name,email,mobile) VALUES 
+				(:first_name, :last_name, :email, :mobile)
 			";
 			$statement = $connect->prepare($query);
 			if($statement->execute($data))
@@ -90,11 +101,13 @@ else
 			$data = array(
 				':first_name'	=>	$first_name,
 				':last_name'	=>	$last_name,
+				':email'	=>	$email,
+				':mobile'	=>	$mobile,
 				':id'			=>	$form_data->id
 			);
 			$query = "
 			UPDATE tbl_sample 
-			SET first_name = :first_name, last_name = :last_name 
+			SET first_name = :first_name, last_name = :last_name, email = :email, mobile = :mobile
 			WHERE id = :id
 			";
 
