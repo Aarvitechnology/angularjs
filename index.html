@@ -1,85 +1,105 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>AngularJS PHP CRUD (Create, Read, Update, Delete) using Bootstrap Modal</title>
-		<script src="jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-		<script src="jquery.dataTables.min.js"></script>
-		<script src="angular-datatables.min.js"></script>
-		<script src="bootstrap.min.js"></script>
-		<link rel="stylesheet" href="bootstrap.min.css">
-		<link rel="stylesheet" href="datatables.bootstrap.css">
-		
-	</head>
-	<body ng-app="crudApp" ng-controller="crudController">
-		
-		<div class="container" ng-init="fetchData()">
-			<br />
-				<h3 align="center">AngularJS PHP CRUD (Create, Read, Update, Delete) using Bootstrap Modal</h3>
-			<br />
-			<div class="alert alert-success alert-dismissible" ng-show="success" >
-				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				{{successMessage}}
-			</div>
-			<div align="right">
-				<button type="button" name="add_button" ng-click="addData()" class="btn btn-success">Add</button>
-			</div>
-			<br />
-			<div class="table-responsive" style="overflow-x: unset;">
-				<table datatable="ng" dt-options="vm.dtOptions" class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Edit</th>
-							<th>Delete</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="name in namesData">
-							<td>{{name.first_name}}</td>
-							<td>{{name.last_name}}</td>
-							<td><button type="button" ng-click="fetchSingleData(name.id)" class="btn btn-warning btn-xs">Edit</button></td>
-							<td><button type="button" ng-click="deleteData(name.id)" class="btn btn-danger btn-xs">Delete</button></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
 
+<head>
+	<title>AngularJS PHP CRUD (Create, Read, Update, Delete) using Bootstrap Modal</title>
+
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+	<script src="jquery.min.js"></script>
+	<script src="moment.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<script src="jquery.dataTables.min.js"></script>
+	<script src="angular-datatables.min.js"></script>
+	<script src="bootstrap.min.js"></script>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" href="datatables.bootstrap.css">
+	<style>
+		.avatar {
+			vertical-align: middle;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+		}
+	</style>
+
+</head>
+
+<body ng-app="crudApp" ng-controller="crudController">
+
+	<div class="container" ng-init="fetchData()">
+		<br />
+		<h3 align="center">AngularJS PHP CRUD (Create, Read, Update, Delete) using Bootstrap Modal</h3>
+		<br />
+		<div class="alert alert-success alert-dismissible" ng-show="success">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			{{successMessage}}
 		</div>
-	</body>
+		<div align="right">
+			<button type="button" name="add_button" ng-click="addData()" class="btn btn-success">Add</button>
+		</div>
+		<br />
+		<div class="table-responsive" style="overflow-x: unset;">
+			<table datatable="ng" dt-options="vm.dtOptions" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="name in namesData">
+						<td>{{name.first_name}}</td>
+						<td>{{name.last_name}}</td>
+						<td><button type="button" ng-click="fetchSingleData(name.id)"
+								class="btn btn-warning btn-xs">Edit</button></td>
+						<td><button type="button" ng-click="deleteData(name.id)"
+								class="btn btn-danger btn-xs">Delete</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</body>
+
 </html>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="crudmodal">
 	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-    		<form name="myForm" id="myForm" method="post" role="form" ng-submit="myForm.$valid && submitForm()" novalidate>
-	      		<div class="modal-header">
-	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        		<h4 class="modal-title">{{person.modalTitle}}</h4>
-	      		</div>
-	      		<div class="modal-body">
-	      			<div class="alert alert-danger alert-dismissible" ng-show="error" >
+		<div class="modal-content">
+			<form name="myForm" id="myForm" method="post" role="form"
+				ng-submit="myForm.$valid && submitForm(myForm.values)" novalidate>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+							aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">{{person.modalTitle}}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-danger alert-dismissible" ng-show="error">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						{{errorMessage}}
 					</div>
 					<div class="form-group">
 						<label>Enter First Name <span style="color: red;">*</span></label>
-						<input type="text" name="first_name" ng-model="person.first_name" class="form-control" required/>
+						<input type="text" name="first_name" ng-model="person.first_name" class="form-control"
+							required />
 						<span style="color:red" ng-show="myForm.$submitted && myForm.first_name.$invalid">
 							<span ng-show="myForm.first_name.$error.required">First name is required.</span>
 						</span>
 					</div>
 					<div class="form-group">
 						<label>Enter Last Name <span style="color: red;">*</span></label>
-						<input type="text" name="last_name" ng-model="person.last_name" class="form-control" required/>
+						<input type="text" name="last_name" ng-model="person.last_name" class="form-control" required />
 						<span style="color:red" ng-show="myForm.$submitted && myForm.last_name.$invalid">
 							<span ng-show="myForm.last_name.$error.required">Last name is required.</span>
 						</span>
 					</div>
 					<div class="form-group">
 						<label>Enter Email <span style="color: red;">*</span></label>
-						<input type="email" name="email" ng-model="person.email" class="form-control" required/>
+						<input type="email" name="email" ng-model="person.email" class="form-control" required />
 						<span style="color:red" ng-show="myForm.$submitted && myForm.email.$invalid">
 							<span ng-show="myForm.email.$error.required">Email is required.</span>
 							<span ng-show="myForm.email.$error.email">Invalid email address.</span>
@@ -87,154 +107,329 @@
 					</div>
 					<div class="form-group">
 						<label>Enter Mobile <span style="color: red;">*</span></label>
-						<input type="text" name="mobile" ng-model="person.mobile" class="form-control" required only-digits/>
+						<input type="text" name="mobile" ng-model="person.mobile" class="form-control" required
+							only-digits />
 						<span style="color:red" ng-show="myForm.$submitted && myForm.mobile.$invalid">
 							<span ng-show="myForm.mobile.$error.required">mobile is required.</span>
 						</span>
 					</div>
-	      		</div>
-	      		<div class="modal-footer">
-	      			<input type="hidden" name="hidden_id" value="{{person.hidden_id}}" />
-	      			<input type="submit" name="submit" id="submit" class="btn btn-info" value="{{person.submit_button}}" />
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        	</div>
-	        </form>
-    	</div>
-  	</div>
+					<div class="form-group">
+						<label>gender <span style="color: red;">*</span></label>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="gender" id="inlineRadio1"
+								ng-model="person.gender" ng-value="'Male'" required>
+							<label class="form-check-label" for="inlineRadio1">Male</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="gender" id="inlineRadio2"
+								ng-model="person.gender" ng-value="'Female'" required>
+							<label class="form-check-label" for="inlineRadio2">Female</label>
+						</div>
+						<span style="color:red" ng-show="myForm.$submitted && myForm.gender.$invalid">
+							<span ng-show="myForm.gender.$error.required">gender is required.</span>
+						</span>
+					</div>
+					<div class="form-group">
+						<label>Date of Birth <span style="color: red;">*</span></label>
+						<input type="date" name="dob" ng-model="person.dob" class="form-control" required />
+						<span style="color:red" ng-show="myForm.$submitted && myForm.dob.$invalid">
+							<span ng-show="myForm.dob.$error.required">Date of Birth is required.</span>
+						</span>
+					</div>
+					<div class="form-group">
+						<label>Select Course <span style="color: red;">*</span></label>
+						<select name="course" ng-model="person.course" required>
+							<option value="" disabled selected hidden>Choose a course</option>
+							<option ng-value="'Angularjs'">Angularjs</option>
+							<option ng-value="'Nodejs'">Nodejs</option>
+							<option ng-value="'Php'">Php</option>
+							<option ng-value="'Python'">Python</option>
+							<option ng-value="'Go'">Go</option>
+						</select>
+						<span style="color:red" ng-show="myForm.$submitted && myForm.course.$invalid">
+							<span ng-show="myForm.course.$error.required">course is required.</span>
+						</span>
+					</div>
+					<div class="form-group">
+						<label>Hobbies <span style="color: red;">*</span></label>
+						<ul class="list-group">
+							<li ng-repeat='a in hobbies' class="list-group-item">
+								<label><input type="checkbox" ng-model="xyx" ng-click="toggleHobbies(a)"
+										ng-checked="selectedHobbies.indexOf(a) > -1"
+										ng-required="selectedHobbies.length == 0" />
+									{{a}}</label>
+							</li>
+						</ul>
+						<span style="color:red" ng-show="myForm.$submitted && selectedHobbies.length == 0">
+							<span ng-show="selectedHobbies.length == 0">Hobbies is required.</span>
+						</span>
+					</div>
+					<div class="form-group" ng-if="person.userUpload==''">
+						<label>Photo <span style="color: red;">*</span></label>
+						<input id="userUpload" ng-model="filename" valid-file name="userUpload"
+							ng-change="handleFileInput();" required type="file" accept="image/*" />
+						<span style="color:red" ng-show="myForm.$submitted && !myForm.userUpload.$valid">
+							<span ng-show="!myForm.userUpload.$valid">Photo is required.</span>
+						</span>
+					</div>
+					<div class="form-group" ng-if="person.userUpload!=''">
+						<label>Photo </label>
+						<img src="{{person.userUpload}}" alt="Avatar" class="avatar" ng-if="person.userUpload!=''">
+						<button type="button" class="close" aria-label="Close" style="float: none;" ng-click="removeFileInput(person.userUpload)">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="hidden_id" value="{{person.hidden_id}}" />
+					<input type="submit" name="submit" id="submit" class="btn btn-info"
+						value="{{person.submit_button}}" />
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 
 <script>
-$('input').attr('autocomplete','off');
-var app = angular.module('crudApp', ['datatables']);
-
-app.directive('onlyDigits', function () {
-    return {
-      require: 'ngModel',
-      restrict: 'A',
-      link: function (scope, element, attr, ctrl) {
-        function inputValue(val) {
-          if (val) {
-            var digits = val.replace(/[^0-9]/g, '');
-
-            if (digits !== val) {
-              ctrl.$setViewValue(digits);
-              ctrl.$render();
-            }
-            return parseInt(digits,10);
-          }
-          return '';
-        }            
-        ctrl.$parsers.push(inputValue);
-      }
-    };
-});
+	$('input').attr('autocomplete', 'off');
 
 
-app.controller('crudController', function($scope, $http){
+	var app = angular.module('crudApp', ['datatables']);
 
-	$scope.success = false;
+	app.directive('onlyDigits', function () {
+		return {
+			require: 'ngModel',
+			restrict: 'A',
+			link: function (scope, element, attr, ctrl) {
+				function inputValue(val) {
+					if (val) {
+						var digits = val.replace(/[^0-9]/g, '');
 
-	$scope.error = false;
-
-	$scope.person = {
-            first_name : '',
-			last_name : '',
-			email : '',
-			mobile : '',
-			hidden_id : '',
-			modalTitle : '',
-			submit_button : '',
-    };
-
-	var orig = angular.copy($scope.person);
-
-	$scope.resetForm = function() {
-        $scope.person = angular.copy(orig);
-        $scope.myForm.$setPristine();
-    };
-
-	$scope.fetchData = function(){
-		$http.get('fetch_data.php').success(function(data){
-			$scope.namesData = data;
-		});
-	};
-
-	$scope.openModal = function(){
-		var modal_popup = angular.element('#crudmodal');
-		$scope.myForm.$setPristine(true);
-		modal_popup.modal('show');
-	};
-
-	$scope.closeModal = function(){
-		var modal_popup = angular.element('#crudmodal');
-		modal_popup.modal('hide');
-	};
-
-	$scope.addData = function(){
-		$scope.resetForm();
-		$scope.person.modalTitle = 'Add Data';
-		$scope.person.submit_button = 'Insert';
-		$scope.openModal();
-	};
-
-	$scope.submitForm = function(){
-		$http({
-			method:"POST",
-			url:"insert.php",
-			data:{'first_name':$scope.person.first_name, 'last_name':$scope.person.last_name, 'email':$scope.person.email,'mobile':$scope.person.mobile, 'action':$scope.person.submit_button, 'id':$scope.person.hidden_id}
-		}).success(function(data){
-			if(data.error != '')
-			{
-				$scope.success = false;
-				$scope.error = true;
-				$scope.errorMessage = data.error;
+						if (digits !== val) {
+							ctrl.$setViewValue(digits);
+							ctrl.$render();
+						}
+						return parseInt(digits, 10);
+					}
+					return '';
+				}
+				ctrl.$parsers.push(inputValue);
 			}
-			else
-			{
-				$scope.success = true;
-				$scope.error = false;
-				$scope.successMessage = data.message;
-				$scope.closeModal();
-				$scope.fetchData();
+		};
+	});
+
+	app.directive('validFile', function () {
+		return {
+			require: 'ngModel',
+			link: function (scope, el, attrs, ngModel) {
+				//change event is fired when file is selected
+				el.bind('change', function () {
+					scope.$apply(function () {
+						ngModel.$setViewValue(el.val());
+						ngModel.$render();
+					})
+				})
 			}
-		});
-	};
-
-	$scope.fetchSingleData = function(id){
-		$http({
-			method:"POST",
-			url:"insert.php",
-			data:{'id':id, 'action':'fetch_single_data'}
-		}).success(function(data){
-			
-			$scope.person.first_name = data.first_name;
-			$scope.person.last_name = data.last_name;
-			$scope.person.email = data.email;
-			$scope.person.mobile = data.mobile;
-			$scope.person.hidden_id = id;
-			$scope.person.modalTitle = 'Edit Data';
-			$scope.person.submit_button = 'Edit';
-			$scope.openModal();
-		});
-	};
-
-	$scope.deleteData = function(id){
-		if(confirm("Are you sure you want to remove it?"))
-		{
-			$http({
-				method:"POST",
-				url:"insert.php",
-				data:{'id':id, 'action':'Delete'}
-			}).success(function(data){
-				$scope.success = true;
-				$scope.error = false;
-				$scope.successMessage = data.message;
-				$scope.fetchData();
-			});	
 		}
-	};
+	});
 
-});
 
+	app.controller('crudController', function ($scope, $http) {
+
+		$scope.success = false;
+
+		$scope.error = false;
+
+		$scope.person = {
+			first_name: '',
+			last_name: '',
+			email: '',
+			mobile: null,
+			gender: '',
+			dob: null,
+			course: '',
+			// hobbies: '',
+			userUpload: '',
+			oldphoto: '',
+			hidden_id: '',
+			modalTitle: '',
+			submit_button: '',
+		};
+
+		$scope.hobbies = ['Film memorabilia', 'Crystal', 'Meditation', 'Benchmarking'];
+		$scope.selectedHobbies = [];
+
+		$scope.filename;
+		$scope.base64URL = undefined;
+		$scope.IsRemovePhoto = false;
+
+		$scope.toggleHobbies = function (animal) {
+			var index = $scope.selectedHobbies.indexOf(animal);
+			if (index == -1) {
+				$scope.selectedHobbies.push(animal);
+			} else {
+				$scope.selectedHobbies.splice(index, 1);
+			}
+		}
+
+		$scope.isUploded = function () {
+			return ($scope.base64URL == undefined ? true : false);
+		}
+
+		$scope.handleFileInput = async function () {
+			let fileToUpload = event.target.files;
+			console.log(fileToUpload[0]);
+			// Fildname.innerText =fileToUpload[0].name;
+			let base64 = await $scope.getBase64File(fileToUpload[0]);
+			$scope.base64URL = base64;
+			$scope.viewfile(base64);
+
+			// $scope.person.userUpload= base64;
+		};
+
+		$scope.removeFileInput = function (fileurl) {
+			$scope.base64URL = undefined;
+			$scope.IsRemovePhoto = true;
+			$scope.person.oldphoto= fileurl;
+			$scope.person.userUpload= '';
+		}
+
+		$scope.viewfile = function (base64) {
+			try {
+				$scope.person.userUpload= base64;
+			} catch (error) {
+				console.log(error);
+			}
+			
+		}
+
+		$scope.getBase64File = async function (inputFile) {
+			const temporaryFileReader = new FileReader();
+			return new Promise((resolve, reject) => {
+				temporaryFileReader.onerror = () => {
+					temporaryFileReader.abort();
+					reject(new DOMException("Problem parsing input file."));
+					reject('');
+				};
+				temporaryFileReader.onload = (event) => {
+					resolve(event.target.result);
+				};
+				temporaryFileReader.readAsDataURL(inputFile);
+			});
+		}
+
+		var orig = angular.copy($scope.person);
+
+		$scope.resetForm = function () {
+			$scope.person = angular.copy(orig);
+			$scope.selectedHobbies = [];
+			$scope.myForm.$setPristine();
+		};
+
+		$scope.fetchData = function () {
+			$http.get('fetch_data.php').success(function (data) {
+				$scope.namesData = data;
+			});
+		};
+
+		$scope.openModal = function () {
+			var modal_popup = angular.element('#crudmodal');
+			$scope.myForm.$setPristine(true);
+			modal_popup.modal('show');
+		};
+
+		$scope.closeModal = function () {
+			var modal_popup = angular.element('#crudmodal');
+			modal_popup.modal('hide');
+		};
+
+		$scope.addData = function () {
+			$scope.resetForm();
+			$scope.person.modalTitle = 'Add Data';
+			$scope.person.submit_button = 'Insert';
+			$scope.openModal();
+		};
+
+		$scope.submitForm = function (formvalue) {
+			console.log(formvalue);
+			$http({
+				method: "POST",
+				url: "insert.php",
+				data: {
+					'first_name': $scope.person.first_name,
+					'last_name': $scope.person.last_name,
+					'email': $scope.person.email,
+					'mobile': $scope.person.mobile,
+					'gender': $scope.person.gender,
+					'dob': $scope.person.dob,
+					'course': $scope.person.course,
+					'hobbies': $scope.selectedHobbies.join(','),
+					'photo': $scope.base64URL,
+					'action': $scope.person.submit_button,
+					'id': $scope.person.hidden_id
+				}
+			}).success(function (data) {
+				if (data.error != '') {
+					$scope.success = false;
+					$scope.error = true;
+					$scope.errorMessage = data.error;
+				} else {
+					$scope.success = true;
+					$scope.error = false;
+					$scope.successMessage = data.message;
+					$scope.closeModal();
+					$scope.fetchData();
+				}
+			});
+		};
+
+		$scope.fetchSingleData = function (id) {
+			$http({
+				method: "POST",
+				url: "insert.php",
+				data: {
+					'id': id,
+					'action': 'fetch_single_data'
+				}
+			}).success(function (data) {
+				// console.log(moment(data.dob, 'YYYY-MM-DD').format('DD-MM-YYYY')); 
+				// const dobdate = moment(data.dob, 'YYYY-MM-DD').format();
+				const dobdate = new Date(data.dob);
+				$scope.person.first_name = data.first_name;
+				$scope.person.last_name = data.last_name;
+				$scope.person.email = data.email;
+				$scope.person.mobile = data.mobile;
+				$scope.person.gender = data.gender;
+				$scope.person.dob = dobdate;
+				$scope.person.course = data.course;
+				$scope.person.userUpload = data.photo;
+				$scope.selectedHobbies = (data.hobbies != '' ? data.hobbies.split(',') : []);
+				$scope.person.hidden_id = id;
+				$scope.person.modalTitle = 'Edit Data';
+				$scope.person.submit_button = 'Edit';
+				$scope.openModal();
+			});
+		};
+
+		$scope.deleteData = function (id) {
+			if (confirm("Are you sure you want to remove it?")) {
+				$http({
+					method: "POST",
+					url: "insert.php",
+					data: {
+						'id': id,
+						'action': 'Delete'
+					}
+				}).success(function (data) {
+					$scope.success = true;
+					$scope.error = false;
+					$scope.successMessage = data.message;
+					$scope.fetchData();
+				});
+			}
+		};
+
+	});
 </script>
